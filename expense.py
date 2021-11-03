@@ -1,4 +1,5 @@
 from PyInquirer import prompt
+import csv
 
 expense_questions = [
     {
@@ -19,12 +20,23 @@ expense_questions = [
 
 ]
 
+my_file = "./expense_report.csv"
 
+def read_expense():
+    with open(my_file, newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ')
+        for row in spamreader:
+            print(', '.join(row))
+
+def write_expense(expense):    
+    with open(my_file, 'a', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=',')
+        spamwriter.writerow([expense["amount"], expense["label"], expense["spender"]])
 
 def new_expense(*args):
     infos = prompt(expense_questions)
-    # Writing the informations on external file might be a good idea ¯\_(ツ)_/¯
     print("Expense Added !")
+    write_expense(infos)
     return True
 
 

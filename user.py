@@ -1,8 +1,27 @@
 from PyInquirer import prompt
-user_questions = [
+import csv
 
+user_questions = [
+    {
+        "type":"input",
+        "name":"Name",
+        "message":"New User - Name: ",
+    }
 ]
+my_file = "./users.csv"
+def read_user():
+    with open(my_file, newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ')
+        for row in spamreader:
+            print(', '.join(row))
+
+def write_user(user):    
+    with open(my_file, 'a', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=',')
+        spamwriter.writerow([user["Name"]])
 
 def add_user():
-    # This function should create a new user, asking for its name
-    return
+    infos = prompt(user_questions)
+    print("User Added")
+    write_user(infos)
+    return True
